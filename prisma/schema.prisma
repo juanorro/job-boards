@@ -21,6 +21,7 @@ model User {
   updateAt DateTime @updatedAt
   accounts Account[]
   sessions Session[]
+  jobs Job[]
 }
 
 model VerificationToken {
@@ -57,4 +58,16 @@ model Session {
   userId String
   expires DateTime
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Job {
+  id Int @id @default(autoincrement())
+  createAt DateTime @default(now())
+  title String?
+  description String?
+  salary String?
+  location String?
+  published Boolean @default(true)
+  author User @relation(fields: [authorId], references: [id])
+  authorId String
 }
