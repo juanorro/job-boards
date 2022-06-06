@@ -19,7 +19,7 @@ export default NextAuth({
         jwt: true,
         maxAge: 30 * 24 * 60 * 60 //30 days
     },
-    
+
     debug: true,
     adapter: PrismaAdapter(prisma),
 
@@ -29,5 +29,5 @@ export default NextAuth({
             return Promise.resolve(session)
         },
     },
-    
+
 });
