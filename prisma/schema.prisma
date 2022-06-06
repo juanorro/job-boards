@@ -22,6 +22,7 @@ model User {
   accounts Account[]
   sessions Session[]
   jobs Job[]
+  company Boolean @default(false)
 }
 
 model VerificationToken {
