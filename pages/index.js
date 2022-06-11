@@ -12,9 +12,13 @@ export default function Home({ jobs, user }) {
 
   const router = useRouter();
 
-  if(session && !session.user.name){
+  const loading = status === 'loading';
+
+  if(loading) return null;
+
+  if(!loading && session && !session.user.name){
     router.push('/setup');
-  } 
+  };
 
   return (
     <div className="mt-10">
@@ -70,8 +74,18 @@ export default function Home({ jobs, user }) {
 export const getServerSideProps = async (ctx) => {
   const session = await getSession(ctx);
 
+  console.log('seession =>', session);
+
   let jobs = await getJobs(prisma);
   jobs = JSON.parse(JSON.stringify(jobs));
+
+  if(!session) {
+    return {
+      props: {
+        jobs,
+      },
+    };
+  };
 
   let user = await getUser(session.user.id, prisma);
   user = JSON.parse(JSON.stringify(user));
