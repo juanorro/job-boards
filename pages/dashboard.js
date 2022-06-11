@@ -31,9 +31,9 @@ const DashboardPage = ({ jobs, user, applications }) => {
         <JobsList jobs={ jobs } isDashboard={ true } />
       ) : (
         <>
-          { applications.map((application) => {
+          { applications.map((application, i) => {
             return (
-              <div className="mb-4 mt-20 flex justify-center">
+              <div className="mb-4 mt-20 flex justify-center" key={ i }>
                 <div className="pl-16 pr-16 -mt-6 w-1/2">
                   <Link href={`/job/${ application.job.id }`}>
                     <a className="text-xl font-bold underline">
