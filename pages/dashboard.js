@@ -46,7 +46,7 @@ const DashboardPage = ({ jobs, user, applications }) => {
                   )}
 
                   { job.application?.map((application, i) => (
-                    <>
+                    <div key={i}>
                       <h2 className="text-base font-normal mt-3">
                         <span className="text-base font-bold mt-3 mr-3">
                           { application.author.name }
@@ -55,7 +55,7 @@ const DashboardPage = ({ jobs, user, applications }) => {
                       <p className="text-lg font-normal mt-2 mb-3">
                         { application.coverletter}
                       </p>
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>
