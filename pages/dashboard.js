@@ -8,9 +8,6 @@ const DashboardPage = ({ jobs, user, applications }) => {
 
   const { data: session } = useSession();
 
-  console.log('jobs =>', jobs);
-  console.log('company =>', user.company);
-  console.log('session =>', session);
   return (
     <div className="mt-10">
       <div className="text-center p-4 m-4">

@@ -6,10 +6,6 @@ export default async function handler(req, res) {
     return res.status(501).end();
   };
 
-  console.log('req =>', req.body);
-  console.log('application =>', prisma.application);
-  console.log('user =>', prisma.user);
-
   const session = await getSession({ req });
 
   if(!session) return res.status(401).json({ message: 'Not logged in' });

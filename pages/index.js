@@ -74,8 +74,6 @@ export default function Home({ jobs, user }) {
 export const getServerSideProps = async (ctx) => {
   const session = await getSession(ctx);
 
-  console.log('seession =>', session);
-
   let jobs = await getJobs(prisma);
   jobs = JSON.parse(JSON.stringify(jobs));
 

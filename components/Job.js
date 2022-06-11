@@ -1,7 +1,7 @@
 import Link from "next/link"
 
 export const Job = ({ job, isDashboard }) => {
-  console.log('dash =>', isDashboard);
+
   return (
     <div className="mb-4 mt-20 pl-16 pr-16">
       <Link href={`/job/${ job.id }`}>
