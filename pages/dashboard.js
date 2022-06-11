@@ -1,9 +1,10 @@
 import { JobsList } from "components/JobsList";
-import { getJobsPosted, getUser } from "lib/data";
+import { getApplications, getJobsPosted, getUser } from "lib/data";
 import prisma from "lib/prisma";
 import { getSession, useSession } from "next-auth/react";
+import Link from "next/link";
 
-const DashboardPage = ({ jobs, user }) => {
+const DashboardPage = ({ jobs, user, applications }) => {
 
   const { data: session } = useSession();
 
@@ -23,15 +24,35 @@ const DashboardPage = ({ jobs, user }) => {
         )}
         { session && (
           <>
-            { user.company && (
-              <p className="mt-10 mb-10 text-2xl font-normal">
-                All the jobs you posted
-              </p>
-            )}
+            <p className="mt-10 mb-10 text-2xl font-normal">
+              {user.company ? 'All the jobs you posted' : 'Your applications'}
+            </p>
           </>
         )}
       </div>
-      <JobsList jobs={ jobs } isDashboard={ true } />
+      { user.company ? (
+        <JobsList jobs={ jobs } isDashboard={ true } />
+      ) : (
+        <>
+          { applications.map((application) => {
+            return (
+              <div className="mb-4 mt-20 flex justify-center">
+                <div className="pl-16 pr-16 -mt-6 w-1/2">
+                  <Link href={`/job/${ application.job.id }`}>
+                    <a className="text-xl font-bold underline">
+                      { application.job.title }
+                    </a>
+                  </Link>
+
+                  <h2 className="text-base font-normal mt-3">
+                    { application.coverletter}
+                  </h2>
+                </div>
+              </div>
+            )
+          })}
+        </>
+      )}
     </div>
   )
 };
@@ -42,13 +63,22 @@ export const getServerSideProps = async (ctx) => {
   let user = await getUser(session.user.id, prisma);
   user = JSON.parse(JSON.stringify(user));
 
-  let jobs = await getJobsPosted(user.id, prisma);
-  jobs = JSON.parse(JSON.stringify(jobs));
+  let jobs = [];
+  let applications = [];
+
+  if(user.company) {
+    jobs = await getJobsPosted(user.id, prisma);
+    jobs = JSON.parse(JSON.stringify(jobs));
+  } else {
+    applications = await getApplications(user.id, prisma);
+    applications = JSON.parse(JSON.stringify(applications));
+  }
 
   return {
     props: {
       user,
-      jobs
+      jobs, 
+      applications,
     }
   }
 }
