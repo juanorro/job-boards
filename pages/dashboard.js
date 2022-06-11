@@ -1,4 +1,4 @@
-import { JobsList } from "components/JobsList";
+import { Job } from "components/Job";
 import { getApplications, getJobsPosted, getUser } from "lib/data";
 import prisma from "lib/prisma";
 import { getSession, useSession } from "next-auth/react";
@@ -28,7 +28,40 @@ const DashboardPage = ({ jobs, user, applications }) => {
         )}
       </div>
       { user.company ? (
-        <JobsList jobs={ jobs } isDashboard={ true } />
+        <div>
+          { jobs.map((job, i) => (
+            <>
+              <Job key={ i } job={ job } isDashboard={ true } />
+
+              <div className="mb-4 mt-20">
+                <div className="pl-16 pr-16 -mt-6">
+                  { job.application.length === 0 ? (
+                    <p className="mb-10 text-2xl font-normal">
+                      No applications so far
+                    </p>
+                  ) : (
+                    <p className="mb-10 text-2xl font-normal">
+                      { job.application.length } applications
+                    </p>
+                  )}
+
+                  { job.application?.map((application, i) => (
+                    <>
+                      <h2 className="text-base font-normal mt-3">
+                        <span className="text-base font-bold mt-3 mr-3">
+                          { application.author.name }
+                        </span>
+                      </h2>
+                      <p className="text-lg font-normal mt-2 mb-3">
+                        { application.coverletter}
+                      </p>
+                    </>
+                  ))}
+                </div>
+              </div>
+            </>
+          ))}
+        </div>
       ) : (
         <>
           { applications.map((application, i) => {
