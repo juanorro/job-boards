@@ -1,6 +1,7 @@
 import Link from "next/link"
 
-export const Job = ({ job }) => {
+export const Job = ({ job, isDashboard }) => {
+  console.log('dash =>', isDashboard);
   return (
     <div className="mb-4 mt-20 pl-16 pr-16">
       <Link href={`/job/${ job.id }`}>
@@ -12,6 +13,17 @@ export const Job = ({ job }) => {
         {job.description}
       </h2>
       <div className="mt-4">
+        { isDashboard && job.published && (
+          <span className="bg-black text-white uppercase text-sm p-2 mr-5">
+            ✅ Published
+          </span>
+        )}
+
+        { isDashboard && !job.published && (
+          <span className="bg-black text-white uppercase text-sm p-2 mr-5">
+            ❌ Unpublished
+          </span>
+        )}
         <h4 className="inline">
           Posted by
         </h4>
